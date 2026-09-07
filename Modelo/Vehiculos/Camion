@@ -1,0 +1,52 @@
+public class Camion extends Vehiculo {
+    
+    Private String placa;
+    private int numEjes;
+    private double capacidadCarga;
+ 
+    public Camion(String matricula, String marca, String modelo, String color, LocalDateTime horaIngreso, LocalDateTime horaSalida, String placa, int numEjes, double capacidadCarga) {
+        super(matricula, marca, modelo, color, horaIngreso, horaSalida);
+        this.placa = placa;
+        this.numEjes = numEjes;
+        this.capacidadCarga = capacidadCarga;
+    }
+    
+    public double calcularTarifa(){
+        double tarifa = 0;
+        if (numEjes==2){
+            tarifa=$15000;
+        }else if(numEjes==3){
+            tarifa=$23000;
+        }else if(numEjes==4){
+            tarifa=$30000;
+        }else if(numEjes>4){
+            tarifa=$40000;
+        }
+        return tarifa;
+    }
+   
+    public int getNumEjes() {
+        return numEjes;
+    }
+
+    public void setNumEjes(int numEjes) {
+        this.numEjes = numEjes;
+    }
+
+    public double getCapacidadCarga() {
+        return capacidadCarga;
+    }
+
+    public void setCapacidadCarga(double capacidadCarga) {
+        this.capacidadCarga = capacidadCarga;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+    
+    public String getPlaca() {
+        return placa;
+    }
+
+}

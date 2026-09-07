@@ -1,0 +1,52 @@
+public class Moto extends Vehiculo {
+    
+    private String placa;
+    private int numRuedas;
+    private double cilindraje;
+   
+
+    public Moto(String matricula, String marca, String modelo, String color, LocalDateTime horaIngreso, LocalDateTime horaSalida, String placa, int numRuedas, double cilindraje) {
+        super(matricula, marca, modelo, color, horaIngreso, horaSalida);
+        this.placa = placa;
+        this.numRuedas = numRuedas;
+        this.cilindraje = cilindraje;
+    }
+    
+    public double calcularTarifa(){
+        double tarifa = 0;
+        if (cilindraje<=250){
+            tarifa=8000;
+        }else if(cilindraje>250 && cilindraje<=600){
+            tarifa=10000;
+        }else if(cilindraje>600){
+            tarifa=13000;
+        }
+        return tarifa;
+    }
+
+    public int getNumRuedas() {
+        return numRuedas;
+    }
+
+    public void setNumRuedas(int numRuedas) {
+        this.numRuedas = numRuedas;
+    }
+
+    public double getCilindraje() {
+        return cilindraje;
+    }
+
+    public void setCilindraje(double cilindraje) {
+        this.cilindraje = cilindraje;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+             
+}

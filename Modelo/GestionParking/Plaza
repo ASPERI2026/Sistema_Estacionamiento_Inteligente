@@ -1,0 +1,36 @@
+import java.util.ArrayList;
+
+public class Plaza extends Vehiculo {
+    int numero;
+    boolean disponible;
+    ArrayList <String> listaPlazas =new ArrayList<> ();
+
+    public class plazaOcupada{
+        if  
+    }
+
+
+    
+
+
+
+    public int getNumero(){
+        return this.numero;
+    }
+    
+    public void setNumero(){
+        this.numero=numero;
+    }
+
+    public boolean disponible(){
+        return this.disponible;
+    }
+
+    public void setDisponible(boolean disponible){
+        this.disponible = disponible;
+    }
+
+
+
+
+}
