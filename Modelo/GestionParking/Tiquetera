@@ -1,0 +1,170 @@
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Tiquetera {
+
+    private Map<String, LocalDateTime> tiquetes;
+
+    public Tiquetera() {
+        tiquetes = new HashMap<>();
+    }
+
+    public void emitirTiquete(Vehiculo vehiculo) {
+
+        if (vehiculo == null) {
+            throw new IllegalArgumentException(
+                "No se puede emitir un tiquete para un vehículo nulo."
+            );
+        }
+
+        if (vehiculo.getMatricula() == null
+                || vehiculo.getMatricula().isBlank()) {
+
+            throw new IllegalArgumentException(
+                "La matrícula del vehículo es obligatoria."
+            );
+        }
+
+        if (tiquetes.containsKey(vehiculo.getMatricula())) {
+            throw new IllegalStateException(
+                "El vehículo ya tiene un tiquete activo."
+            );
+        }
+
+        LocalDateTime horaIngreso = vehiculo.getHoraIngreso();
+
+        if (horaIngreso == null) {
+            horaIngreso = LocalDateTime.now();
+            vehiculo.setHoraIngreso(horaIngreso);
+        }
+
+        if (horaIngreso.isAfter(LocalDateTime.now())) {
+            throw new IllegalArgumentException(
+                "La fecha de ingreso no puede ser futura."
+            );
+        }
+
+        tiquetes.put(vehiculo.getMatricula(), horaIngreso);
+
+        System.out.println(
+            "Tiquete emitido correctamente para la matrícula: "
+            + vehiculo.getMatricula()
+        );
+
+        System.out.println(
+            "Hora de ingreso: " + horaIngreso
+        );
+    }
+
+    public double calcularMonto(Vehiculo vehiculo) {
+
+        if (vehiculo == null) {
+            throw new IllegalArgumentException(
+                "El vehículo no puede ser nulo."
+            );
+        }
+
+        String matricula = vehiculo.getMatricula();
+
+        if (matricula == null || matricula.isBlank()) {
+            throw new IllegalArgumentException(
+                "La matrícula del vehículo es obligatoria."
+            );
+        }
+
+        if (!tiquetes.containsKey(matricula)) {
+            throw new IllegalStateException(
+                "El vehículo no tiene un tiquete activo."
+            );
+        }
+
+        LocalDateTime horaEntrada = tiquetes.get(matricula);
+
+        LocalDateTime horaSalida = vehiculo.getHoraSalida();
+
+        if (horaSalida == null) {
+            horaSalida = LocalDateTime.now();
+            vehiculo.setHoraSalida(horaSalida);
+        }
+
+        if (horaSalida.isAfter(LocalDateTime.now())) {
+            throw new IllegalArgumentException(
+                "La fecha de salida no puede ser futura."
+            );
+        }
+
+        if (horaSalida.isBefore(horaEntrada)) {
+            throw new IllegalArgumentException(
+                "La fecha de salida no puede ser anterior "
+                + "a la fecha de entrada."
+            );
+        }
+
+        long minutos = Duration.between(
+            horaEntrada,
+            horaSalida
+        ).toMinutes();
+
+        long horas = (long) Math.ceil(minutos / 60.0);
+
+        if (horas <= 0) {
+            horas = 1;
+        }
+
+        double tarifaPorHora = obtenerTarifaPorHora(vehiculo);
+
+        if (tarifaPorHora < 0) {
+            throw new IllegalArgumentException(
+                "La tarifa no puede ser negativa."
+            );
+        }
+
+        double montoTotal = tarifaPorHora * horas;
+
+        if (montoTotal < 0) {
+            throw new IllegalArgumentException(
+                "El monto calculado no puede ser negativo."
+            );
+        }
+
+        tiquetes.remove(matricula);
+
+        System.out.println("----- TIQUETE -----");
+        System.out.println("Matrícula: " + matricula);
+        System.out.println("Entrada: " + horaEntrada);
+        System.out.println("Salida: " + horaSalida);
+        System.out.println("Horas cobradas: " + horas);
+        System.out.println("Tarifa por hora: $" + tarifaPorHora);
+        System.out.println("Total a pagar: $" + montoTotal);
+        System.out.println("-------------------");
+        return montoTotal;
+    }
+
+    private double obtenerTarifaPorHora(Vehiculo vehiculo) {
+
+    if (vehiculo instanceof Moto) {
+        Moto moto = (Moto) vehiculo;
+        return moto.calcularTarifa();
+
+    } else if (vehiculo instanceof Camion) {
+        Camion camion = (Camion) vehiculo;
+        return camion.calcularTarifa();
+
+    } else if (vehiculo instanceof Automovil) {
+        return 10000;
+
+    } else {
+        throw new IllegalArgumentException(
+            "Tipo de vehículo no válido."
+        );
+    }
+
+    public boolean tieneTiquete(String matricula) {
+
+        if (matricula == null || matricula.isBlank()) {
+            return false;
+        }return tiquetes.containsKey(matricula);
+    }
+}

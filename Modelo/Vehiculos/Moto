@@ -1,3 +1,4 @@
+package Modelo.Vehiculos;
 public class Moto extends Vehiculo {
     
     private String placa;
@@ -5,8 +6,8 @@ public class Moto extends Vehiculo {
     private double cilindraje;
    
 
-    public Moto(String matricula, String marca, String modelo, String color, LocalDateTime horaIngreso, LocalDateTime horaSalida, String placa, int numRuedas, double cilindraje) {
-        super(matricula, marca, modelo, color, horaIngreso, horaSalida);
+    public Moto(String placa, String marca, String modelo, String color, LocalDateTime horaIngreso, LocalDateTime horaSalida, String placa, int numRuedas, double cilindraje) {
+        super(placa, marca, modelo, color, horaIngreso, horaSalida);
         this.placa = placa;
         this.numRuedas = numRuedas;
         this.cilindraje = cilindraje;
@@ -47,6 +48,5 @@ public class Moto extends Vehiculo {
     public String getPlaca() {
         return placa;
     }
-
-             
+    
 }

@@ -1,11 +1,12 @@
+package Modelo.Vehiculos;
 public class Camion extends Vehiculo {
     
-    Private String placa;
+    private String placa;
     private int numEjes;
     private double capacidadCarga;
  
-    public Camion(String matricula, String marca, String modelo, String color, LocalDateTime horaIngreso, LocalDateTime horaSalida, String placa, int numEjes, double capacidadCarga) {
-        super(matricula, marca, modelo, color, horaIngreso, horaSalida);
+    public Camion(String placa, String marca, String modelo, String color, LocalDateTime horaIngreso, LocalDateTime horaSalida, String placa, int numEjes, double capacidadCarga) {
+        super(placa, marca, modelo, color, horaIngreso, horaSalida);
         this.placa = placa;
         this.numEjes = numEjes;
         this.capacidadCarga = capacidadCarga;
@@ -14,13 +15,13 @@ public class Camion extends Vehiculo {
     public double calcularTarifa(){
         double tarifa = 0;
         if (numEjes==2){
-            tarifa=$15000;
+            tarifa= 15000;
         }else if(numEjes==3){
-            tarifa=$23000;
+            tarifa= 23000;
         }else if(numEjes==4){
-            tarifa=$30000;
+            tarifa= 30000;
         }else if(numEjes>4){
-            tarifa=$40000;
+            tarifa= 40000;
         }
         return tarifa;
     }
