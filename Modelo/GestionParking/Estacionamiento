@@ -1,0 +1,100 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class Estacionamiento {
+
+    private List<Plaza> plazas;
+    private List<Vehiculo> vehiculosActuales;
+    private Tiquetera tiquetera;
+    private double ingresosDelDia;
+
+    // Guarda qué plaza quedó asignada a cada matrícula
+    private Map<String, Plaza> plazaAsignada;
+
+    public Estacionamiento(int totalPlazas) {
+        this.plazas = new ArrayList<>();
+        this.vehiculosActuales = new ArrayList<>();
+        this.plazaAsignada = new HashMap<>();
+        this.tiquetera = new Tiquetera();
+        this.ingresosDelDia = 0;
+
+        for (int i = 1; i <= totalPlazas; i++) {
+            plazas.add(new Plaza(i));
+        }
+    }
+
+    public boolean ingresarVehiculo(Vehiculo vehiculo) {
+        Plaza plazaLibre = buscarPlazaLibre();
+        if (plazaLibre == null) {
+            System.out.println("No hay plazas disponibles.");
+            return false;
+        }
+
+        plazaLibre.ocupar(vehiculo);
+        vehiculosActuales.add(vehiculo);
+        plazaAsignada.put(vehiculo.getMatricula(), plazaLibre);
+        tiquetera.emitirTiquete(vehiculo);
+
+        System.out.println("Vehículo " + vehiculo.getMatricula() + " ingresado en la plaza " + plazaLibre.getNumero());
+        return true;
+    }
+
+    public double retirarVehiculo(String matricula) {
+        Vehiculo vehiculo = buscarVehiculoPorMatricula(matricula);
+        if (vehiculo == null) {
+            System.out.println("No se encontró un vehículo con matrícula " + matricula);
+            return -1;
+        }
+
+        double monto = tiquetera.calcularMonto(vehiculo);
+        ingresosDelDia += monto;
+
+        vehiculosActuales.remove(vehiculo);
+        Plaza plaza = plazaAsignada.remove(matricula);
+        if (plaza != null) {
+            plaza.liberarPlaza();
+        }
+
+        System.out.println("Vehículo " + matricula + " retirado. Total a pagar: $" + monto);
+        return monto;
+    }
+
+    public Plaza buscarPlazaLibre() {
+        for (Plaza p : plazas) {
+            if (!p.plazaOcupada()) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public int consultarDisponibilidad() {
+        int disponibles = 0;
+        for (Plaza p : plazas) {
+            if (!p.plazaOcupada()) {
+                disponibles++;
+            }
+        }
+        return disponibles;
+    }
+
+    public String generarReporteDiario() {
+        StringBuilder reporte = new StringBuilder();
+        reporte.append("----- Reporte diario -----\n");
+        reporte.append("Vehículos actualmente dentro: ").append(vehiculosActuales.size()).append("\n");
+        reporte.append("Plazas disponibles: ").append(consultarDisponibilidad()).append(" de ").append(plazas.size()).append("\n");
+        reporte.append("Ingresos acumulados del día: $").append(ingresosDelDia).append("\n");
+        return reporte.toString();
+    }
+
+    private Vehiculo buscarVehiculoPorMatricula(String matricula) {
+        for (Vehiculo v : vehiculosActuales) {
+            if (v.getMatricula().equals(matricula)) {
+                return v;
+            }
+        }
+        return null;
+    }
+}
