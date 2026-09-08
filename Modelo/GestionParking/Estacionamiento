@@ -10,7 +10,6 @@ public class Estacionamiento {
     private Tiquetera tiquetera;
     private double ingresosDelDia;
 
-    // Guarda qué plaza quedó asignada a cada matrícula
     private Map<String, Plaza> plazaAsignada;
 
     public Estacionamiento(int totalPlazas) {
