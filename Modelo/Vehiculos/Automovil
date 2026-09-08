@@ -1,6 +1,7 @@
 package Modelo.Vehiculos;
 
 public class Automovil extends Vehiculos {
+
     private int numPuertas;
     private String tipoCombustible;
     private static final double TARIFA_BASE = 10000.0;
