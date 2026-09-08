@@ -2,34 +2,41 @@ package Modelo.Vehiculos;
 
 public class Automovil extends Vehiculos {
     private int numPuertas;
-    private String tipoCombustible; 
+    private String tipoCombustible;
     private static final double TARIFA_BASE = 10000.0;
+
     public Automovil(String matricula, String marca, String modelo, String color,
                      int numPuertas, String tipoCombustible) {
         super(matricula, marca, modelo, color, null, null);
         this.numPuertas = numPuertas;
         this.tipoCombustible = tipoCombustible;
     }
+
     public Automovil(String matricula, String marca, String modelo) {
         this(matricula, marca, modelo, null, 4, "Gasolina");
     }
+
     public int getNumPuertas() {
         return numPuertas;
     }
+
     public void setNumPuertas(int numPuertas) {
         this.numPuertas = numPuertas;
     }
+
     public String getTipoCombustible() {
         return tipoCombustible;
     }
+
     public void setTipoCombustible(String tipoCombustible) {
         this.tipoCombustible = tipoCombustible;
     }
+
     @Override
     public double calcularTarifa() {
         double factor = 1.0;
         if (numPuertas > 4) {
-            factor = 1.2; 
+            factor = 1.2;
         }
         if ("Diesel".equalsIgnoreCase(tipoCombustible)) {
             factor *= 1.1;
